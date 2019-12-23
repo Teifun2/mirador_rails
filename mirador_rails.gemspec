@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'material_icons'
   spec.add_dependency 'openseadragon'
   spec.add_dependency 'jquery-rails'
-  spec.add_dependency 'tinymce-rails'
+  spec.add_dependency 'tinymce-rails', '< 5.0'
 
   spec.add_development_dependency "bundler", "~> 2.0.1"
   spec.add_development_dependency "rake", "~> 10.0"
