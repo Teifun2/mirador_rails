@@ -19286,12 +19286,20 @@ $.SimpleASEndpoint = function (options) {
       var _this = this;
       var annoText = "",
         selectedTags = [],
-        tags = [];
+        tags = [],
+        fragmentChecked = "",
+        writerChecked = "";
       if (!jQuery.isEmptyObject(_this.annotation)) {
         if (jQuery.isArray(_this.annotation.resource)) {
           jQuery.each(_this.annotation.resource, function(index, value) {
             if (value['@type'] === "oa:Tag") {
               selectedTags.push(value.chars);
+            } else if (value['@type'] === "oa:Contains") {
+              if (value.chars === "writer") {
+                writerChecked = "checked";
+              } else {
+                fragmentChecked = "checked";
+              }
             } else {
               annoText = value.chars;
             }
@@ -19311,6 +19319,8 @@ $.SimpleASEndpoint = function (options) {
         content: annoText,
         selectedTags : selectedTags,
         tags: tags,
+        fragmentChecked: fragmentChecked,
+        writerChecked: writerChecked,
         windowId : _this.windowId
       });
     },
@@ -19345,7 +19355,8 @@ $.SimpleASEndpoint = function (options) {
 
     createAnnotation: function() {
       var tags = this.editorContainer.find('.tags-editor').val(),
-        resourceText = tinymce.activeEditor.getContent();
+        resourceText = tinymce.activeEditor.getContent(),
+          contains = this.editorContainer.find('input[type="radio"]:checked').val();
 
       var motivation = [],
         resource = [],
@@ -19365,6 +19376,10 @@ $.SimpleASEndpoint = function (options) {
         "@type": "dctypes:Text",
         "format": "text/html",
         "chars": resourceText
+      });
+      resource.push({
+          "@type": "oa:Contains",
+          "chars": contains
       });
       return {
         "@context": "http://iiif.io/api/presentation/2/context.json",
@@ -19407,6 +19422,8 @@ $.SimpleASEndpoint = function (options) {
 
     editorTemplate: $.Handlebars.compile([
       '<textarea class="text-editor" placeholder="{{t "comments"}}…">{{#if content}}{{content}}{{/if}}</textarea>',
+      '<input type="radio" name="contains" value="fragment" {{fragmentChecked}}> Fragment<br>',
+      '<input type="radio" name="contains" value="writer" {{writerChecked}}> Writer / Text<br>'
 //      '<select id="tags-editor-{{windowId}}" class="tags-editor" multiple="true">{{#each tags}}',
 //      '<option value="{{this}}" {{#ifContains ../selectedTags this }}selected="selected"{{/ifContains}}>{{this}}</option>',
 //      '{{/each}}</select>'
