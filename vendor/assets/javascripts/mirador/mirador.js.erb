@@ -19306,8 +19306,11 @@ $.SimpleASEndpoint = function (options) {
             }
           });
         } else {
+          fragmentChecked = "checked";
           annoText = _this.annotation.resource.chars;
         }
+      } else {
+        fragmentChecked = "checked";
       }
       (this.config.tags || []).forEach(function(item) {
         if (selectedTags.indexOf(item) < 0) {
@@ -19357,7 +19360,7 @@ $.SimpleASEndpoint = function (options) {
     createAnnotation: function() {
       var tags = this.editorContainer.find('.tags-editor').val(),
         resourceText = tinymce.activeEditor.getContent(),
-          contains = this.editorContainer.find('input[type="radio"]:checked').val();
+        contains = this.editorContainer.find('input[type="radio"]:checked').val();
 
       var motivation = [],
         resource = [],
@@ -19392,7 +19395,8 @@ $.SimpleASEndpoint = function (options) {
 
     updateAnnotation: function(oaAnno) {
       var selectedTags = this.editorContainer.find('.tags-editor').val(),
-        resourceText = tinymce.activeEditor.getContent();
+        resourceText = tinymce.activeEditor.getContent(),
+        contains = this.editorContainer.find('input[type="radio"]:checked').val();
 
       var motivation = [],
         resource = [];
@@ -19405,18 +19409,20 @@ $.SimpleASEndpoint = function (options) {
         return value["@type"] !== "oa:Tag";
       });
       //re-add tagging if we have them
-      if (selectedTags.length > 0) {
-        oaAnno.motivation.push("oa:tagging");
-        jQuery.each(selectedTags, function(index, value) {
-          oaAnno.resource.push({
-            "@type": "oa:Tag",
-            "chars": value
-          });
-        });
-      }
+      // if (selectedTags.length > 0) {
+      //   oaAnno.motivation.push("oa:tagging");
+      //   jQuery.each(selectedTags, function(index, value) {
+      //     oaAnno.resource.push({
+      //       "@type": "oa:Tag",
+      //       "chars": value
+      //     });
+      //   });
+      // }
       jQuery.each(oaAnno.resource, function(index, value) {
         if (value["@type"] === "dctypes:Text") {
           value.chars = resourceText;
+        } else if (value["@type"] === "oa:Contains") {
+          value.chars = contains;
         }
       });
     },
