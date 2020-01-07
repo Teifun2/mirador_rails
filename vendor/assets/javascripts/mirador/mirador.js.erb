@@ -14892,6 +14892,7 @@ return /******/ (function(modules) { // webpackBootstrap
           jQuery.each(annotation.resource, function(index, value) {
             if (value['@type'] === "oa:Tag") {
               tags.push(value.chars);
+            } else if (value['@type'] === "oa:Contains") {
             } else {
               annoText = value.chars;
             }
