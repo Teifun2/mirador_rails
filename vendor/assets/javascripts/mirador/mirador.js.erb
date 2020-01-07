@@ -19422,8 +19422,8 @@ $.SimpleASEndpoint = function (options) {
 
     editorTemplate: $.Handlebars.compile([
       '<textarea class="text-editor" placeholder="{{t "comments"}}…">{{#if content}}{{content}}{{/if}}</textarea>',
-      '<input type="radio" name="contains" value="fragment" {{fragmentChecked}}> Fragment<br>',
-      '<input type="radio" name="contains" value="writer" {{writerChecked}}> Writer / Text<br>'
+      '<div class="form-check form-check-inline" style="padding-top:10px"><input class="form-check-input" type="radio" name="contains" id="contains-radio-fragment" value="fragment" {{fragmentChecked}}> <label class="form-check-label" for="contains-radio-fragment">Fragment</label></div>',
+      '<div class="form-check form-check-inline" style="padding-bottom:10px"><input class="form-check-input" type="radio" name="contains" id="contains-radio-writer" value="writer" {{writerChecked}}> <label class="form-check-label" for="contains-radio-writer">Writer / Text</label></div>'
 //      '<select id="tags-editor-{{windowId}}" class="tags-editor" multiple="true">{{#each tags}}',
 //      '<option value="{{this}}" {{#ifContains ../selectedTags this }}selected="selected"{{/ifContains}}>{{this}}</option>',
 //      '{{/each}}</select>'
